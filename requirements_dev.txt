@@ -2,7 +2,7 @@ pip==25.2
 bump2version==1.0.1
 wheel==0.45.1
 watchdog==6.0.0
-mypy==1.17.1
+mypy==1.18.2
 flake8==7.3.0
 tox==4.30.2
 coverage==7.10.6
