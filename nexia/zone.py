@@ -425,7 +425,7 @@ class NexiaThermostatZone:
             self._room_iq_sensor_map = {}
 
     def get_sensors(self) -> list[NexiaSensor]:
-        """Get the RoomIQ sensor detail data objects from this instance
+        """Get the RoomIQ sensor detail data objects from this instance.
 
         :return: list of sensor detail data objects
         """
@@ -452,10 +452,13 @@ class NexiaThermostatZone:
             return sensor
 
         if self._room_iq_sensor_map:
-            valid_ids = ", ".join(str(sid) for sid in self._room_iq_sensor_map)
-            raise KeyError(f"Sensor ID ({sensor_id}) not found, valid IDs: {valid_ids}")
-
-        raise AttributeError(f"RoomIQ sensors not supported in zone {self.get_name()}")
+            valid_ids = (str(sid) for sid in self._room_iq_sensor_map)
+        else:
+            # raises AttributeError when the zone has no room_iq_sensors feature
+            valid_ids = (str(s["id"]) for s in self._get_room_iq_sensors_json())
+        raise KeyError(
+            f"Sensor ID ({sensor_id}) not found, valid IDs: {', '.join(valid_ids)}"
+        )
 
     ########################################################################
     # Zone Set Methods
