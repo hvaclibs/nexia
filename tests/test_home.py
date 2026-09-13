@@ -721,7 +721,7 @@ async def test_single_zone(aiohttp_session: aiohttp.ClientSession) -> None:
         await zone.select_room_iq_sensors([76543210])
 
     with pytest.raises(
-        KeyError,
+        AttributeError,
         match="RoomIQ sensors not supported in zone Thermostat 1 NativeZone",
     ):
         zone.get_sensor_by_id(87654321)

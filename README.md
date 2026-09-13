@@ -38,6 +38,7 @@ The Nexia Thermostat Zone service `get_sensors` is provided to obtain these
 sensor data in a list of sensor detail data objects of type NexiaSensor.
 To get a specific sensor detail data object,
 the Nexia Thermostat Zone service `get_sensor_by_id` is provided.
+To ensure reusability, the fields in these sensor detail data objects are frozen and may not be reassigned.
 
 You can specify which RoomIQ sensors to include in the zone average via
 the Nexia Thermostat Zone service `select_room_iq_sensors`.

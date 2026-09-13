@@ -412,14 +412,15 @@ class NexiaThermostatZone:
 
     def _map_room_iq_sensors(self) -> None:
         """Update our dict mapping sensor ids to RoomIQ sensor detail data objects."""
-        try:
-            sensors_json = self._get_room_iq_sensors_json()
 
+        if (r_iq_feature := self._get_zone_features_or_none("room_iq_sensors")) and (
+            sensors_json := r_iq_feature.get("sensors")
+        ):
             self._room_iq_sensor_map = {
                 sensor.id: sensor
                 for sensor in (NexiaSensor.from_json(s_json) for s_json in sensors_json)
             }
-        except AttributeError:
+        else:
             # our json has no sensors
             self._room_iq_sensor_map = {}
 
@@ -452,10 +453,9 @@ class NexiaThermostatZone:
 
         if self._room_iq_sensor_map:
             valid_ids = ", ".join(str(sid) for sid in self._room_iq_sensor_map)
-            msg = f"Sensor ID ({sensor_id}) not found, valid IDs: {valid_ids}"
-        else:
-            msg = f"RoomIQ sensors not supported in zone {self.get_name()}"
-        raise KeyError(msg)
+            raise KeyError(f"Sensor ID ({sensor_id}) not found, valid IDs: {valid_ids}")
+
+        raise AttributeError(f"RoomIQ sensors not supported in zone {self.get_name()}")
 
     ########################################################################
     # Zone Set Methods
