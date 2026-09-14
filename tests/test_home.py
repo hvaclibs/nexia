@@ -5,6 +5,7 @@ import gc
 import json
 import logging
 import os
+from dataclasses import FrozenInstanceError
 from os.path import dirname
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -1383,6 +1384,9 @@ async def test_sensor_access(
     assert sensor.battery_level == 95
     assert sensor.battery_low is False
     assert sensor.battery_valid is True
+
+    with pytest.raises(FrozenInstanceError, match="cannot assign to field 'weight'"):
+        sensor.weight = 0.0  # type: ignore[misc]
 
     assert zone.get_active_sensor_ids() == {17687546, 17687549}
 
