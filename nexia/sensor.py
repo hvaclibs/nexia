@@ -6,7 +6,7 @@ import dataclasses
 from typing import Any
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class NexiaSensor:
     """Data object representing details of a nexia sensor"""
 
